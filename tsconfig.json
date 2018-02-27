@@ -2,6 +2,7 @@
     "compilerOptions": {
         "module": "commonjs",
         "noImplicitAny": true,
+        "noImplicitReturns": true,
         "outDir": "dist",
         "preserveConstEnums": true,
         "removeComments": true,
