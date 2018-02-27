@@ -1,0 +1,15 @@
+{
+  "name": "stately",
+  "version": "1.0.0",
+  "description": "Redux + state management.",
+  "main": "dist/index.js",
+  "scripts": {
+    "compile": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cmcahoon@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^2.7.2"
+  }
+}
