@@ -1,19 +1,21 @@
 import { Action, createStore } from "redux";
 
 // Reducer
-function counter(state = 0, action: Action) {
+function car(state = "PARKED", action: Action) {
     switch (action.type) {
-        case "INCREMENT":
-            return state + 1;
-        case "DECREMENT":
-            return state - 1;
+        case "CRASH":
+            return "CRASHED";
+        case "DRIVE":
+            return "MOVING";
+        case "PARK":
+            return "PARKED";
         default:
             return state;
     }
 }
 
 // Store
-const store = createStore(counter);
+const store = createStore(car);
 
 // Subscribe
 store.subscribe(() => {
@@ -21,6 +23,6 @@ store.subscribe(() => {
 });
 
 // Do some things...
-store.dispatch({ type: "INCREMENT" });
-store.dispatch({ type: "INCREMENT" });
-store.dispatch({ type: "DECREMENT" });
+store.dispatch({ type: "DRIVE" });
+store.dispatch({ type: "PARK" });
+store.dispatch({ type: "CRASH" });
