@@ -19,6 +19,7 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
+    "immutable": "^3.8.2",
     "redux": "^3.7.2"
   }
 }
