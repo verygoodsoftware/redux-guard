@@ -1,35 +1,35 @@
 import { Store } from "redux";
-import { createStateMachine, IStateMachine } from "../src/index";
+import { createStateMachine, IStateMachineDefinition } from "../src/index";
 
 // Define the state machine
-const stateMachine: IStateMachine = {
+const stateMachine: IStateMachineDefinition = {
     initialState: "PARKED",
     states: [
         {
             id: "PARKED",
-            transitionTo: [
-                {
-                    action: "DRIVE",
-                    nextState: "MOVING",
-                },
-            ],
+            transitions: [ "DRIVE" ],
         },
         {
             id: "MOVING",
-            transitionTo: [
-                {
-                    action: "CRASH",
-                    nextState: "CRASHED",
-                },
-                {
-                    action: "PARK",
-                    nextState: "PARKED",
-                },
-            ],
+            transitions: [ "CRASH", "PARK" ],
         },
         {
             id: "CRASHED",
-            transitionTo: [],
+            transitions: [],
+        },
+    ],
+    transitions: [
+        {
+            id: "DRIVE",
+            nextState: "MOVING",
+        },
+        {
+            id: "CRASH",
+            nextState: "CRASHED",
+        },
+        {
+            id: "PARK",
+            nextState: "PARKED",
         },
     ],
 };
