@@ -1,5 +1,4 @@
-import { Store } from "redux";
-import { createStateMachine, IStateMachineDefinition } from "../src/index";
+import { IStateMachineDefinition, StateMachine } from "../src/index";
 
 // Define the state machine
 const stateMachine: IStateMachineDefinition = {
@@ -34,55 +33,55 @@ const stateMachine: IStateMachineDefinition = {
     ],
 };
 
-let store: Store<string> = null;
+let machine: StateMachine = null;
 
 describe("A car", () => {
     beforeEach(() => {
-        store = createStateMachine(stateMachine);
+        machine = new StateMachine(stateMachine);
     });
 
     describe("that is parked", () => {
         test("can start driving", () => {
-            store.dispatch({ type: "DRIVE" });
-            expect(store.getState()).toBe("MOVING");
+            machine.dispatch("DRIVE");
+            expect(machine.getState()).toBe("MOVING");
         });
 
         test("cannot crash", () => {
-            store.dispatch({ type: "CRASH"});
-            expect(store.getState()).toBe("PARKED");
+            machine.dispatch("CRASH");
+            expect(machine.getState()).toBe("PARKED");
         });
     });
 
     describe("that is moving", () => {
         beforeEach(() => {
-            store.dispatch({ type: "DRIVE" });
+            machine.dispatch("DRIVE");
         });
 
         test("can crash", () => {
-            store.dispatch({ type: "CRASH"});
-            expect(store.getState()).toBe("CRASHED");
+            machine.dispatch("CRASH");
+            expect(machine.getState()).toBe("CRASHED");
         });
 
         test("can park", () => {
-            store.dispatch({ type: "PARK"});
-            expect(store.getState()).toBe("PARKED");
+            machine.dispatch("PARK");
+            expect(machine.getState()).toBe("PARKED");
         });
     });
 
     describe("that is crashed", () => {
         beforeEach(() => {
-            store.dispatch({ type: "DRIVE" });
-            store.dispatch({ type: "CRASH" });
+            machine.dispatch("DRIVE");
+            machine.dispatch("CRASH");
         });
 
         test("cannot park", () => {
-            store.dispatch({ type: "PARK"});
-            expect(store.getState()).toBe("CRASHED");
+            machine.dispatch("PARK");
+            expect(machine.getState()).toBe("CRASHED");
         });
 
         test("cannot start driving", () => {
-            store.dispatch({ type: "DRIVE" });
-            expect(store.getState()).toBe("CRASHED");
+            machine.dispatch("DRIVE");
+            expect(machine.getState()).toBe("CRASHED");
         });
     });
 });
