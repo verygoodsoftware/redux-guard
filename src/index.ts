@@ -1,54 +1,21 @@
 import { Map } from "immutable";
-import { Action, createStore, Reducer } from "redux";
+import { Action, createStore, Reducer, Store } from "redux";
 
 // Define a state
+export interface IStateMachine {
+    initialState: string;
+    states: IState[];
+}
+
 interface IState {
     id: string;
     transitionTo: ITransition[];
-}
-
-interface IStateMachine {
-    initialState: string;
-    states: IState[];
 }
 
 interface ITransition {
     action: string;
     nextState: string;
 }
-
-// Configure the state machine
-const stateMachine: IStateMachine = {
-    initialState: "PARKED",
-    states: [
-        {
-            id: "PARKED",
-            transitionTo: [
-                {
-                    action: "DRIVE",
-                    nextState: "MOVING",
-                },
-            ],
-        },
-        {
-            id: "MOVING",
-            transitionTo: [
-                {
-                    action: "CRASH",
-                    nextState: "CRASHED",
-                },
-                {
-                    action: "PARK",
-                    nextState: "PARKED",
-                },
-            ],
-        },
-        {
-            id: "CRASHED",
-            transitionTo: [],
-        },
-    ],
-};
 
 // Generate the reducer from the state machine
 function generateReducer(machine: IStateMachine): Reducer<string> {
@@ -63,13 +30,11 @@ function generateReducer(machine: IStateMachine): Reducer<string> {
         // Is the action supported on the current state?
         const stateIdx = statesIdx.get(state, -1);
         if (stateIdx === -1) {
-            console.log("!!! State did not exist.");
             return state;
         }
 
         const stateDefinition = machine.states[stateIdx];
         if (stateDefinition === undefined) {
-            console.log("!!! State did not exist, but index did?");
             return state;
         }
 
@@ -82,7 +47,6 @@ function generateReducer(machine: IStateMachine): Reducer<string> {
 
         const transition = stateDefinition.transitionTo.reduce(findTransition, null);
         if (!transition) {
-            console.log("!!! State does not support action.", state, action.type);
             return state;
         }
 
@@ -90,17 +54,9 @@ function generateReducer(machine: IStateMachine): Reducer<string> {
     };
 }
 
-const car = generateReducer(stateMachine);
+export function createStateMachine(machine: IStateMachine): Store<string> {
+    const reducer = generateReducer(machine);
+    const store = createStore(reducer);
 
-// Store
-const store = createStore(car);
-
-// Subscribe
-store.subscribe(() => {
-    console.log(store.getState());
-});
-
-// Do some things...
-store.dispatch({ type: "DRIVE" });
-store.dispatch({ type: "PARK" });
-store.dispatch({ type: "CRASH" });
+    return store;
+}
