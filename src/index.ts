@@ -32,7 +32,7 @@ export class StateMachine {
         this.store = createStore(reducer);
     }
 
-    public dispatch(transition: string) {
+    public transition(transition: string) {
         this.store.dispatch({ type: transition });
     }
 

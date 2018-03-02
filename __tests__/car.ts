@@ -42,45 +42,45 @@ describe("A car", () => {
 
     describe("that is parked", () => {
         test("can start driving", () => {
-            machine.dispatch("DRIVE");
+            machine.transition("DRIVE");
             expect(machine.getState()).toBe("MOVING");
         });
 
         test("cannot crash", () => {
-            machine.dispatch("CRASH");
+            machine.transition("CRASH");
             expect(machine.getState()).toBe("PARKED");
         });
     });
 
     describe("that is moving", () => {
         beforeEach(() => {
-            machine.dispatch("DRIVE");
+            machine.transition("DRIVE");
         });
 
         test("can crash", () => {
-            machine.dispatch("CRASH");
+            machine.transition("CRASH");
             expect(machine.getState()).toBe("CRASHED");
         });
 
         test("can park", () => {
-            machine.dispatch("PARK");
+            machine.transition("PARK");
             expect(machine.getState()).toBe("PARKED");
         });
     });
 
     describe("that is crashed", () => {
         beforeEach(() => {
-            machine.dispatch("DRIVE");
-            machine.dispatch("CRASH");
+            machine.transition("DRIVE");
+            machine.transition("CRASH");
         });
 
         test("cannot park", () => {
-            machine.dispatch("PARK");
+            machine.transition("PARK");
             expect(machine.getState()).toBe("CRASHED");
         });
 
         test("cannot start driving", () => {
-            machine.dispatch("DRIVE");
+            machine.transition("DRIVE");
             expect(machine.getState()).toBe("CRASHED");
         });
     });
