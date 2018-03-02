@@ -1,28 +1,33 @@
 'use strict'
 
-const INVALID_TRANSITION = 'INVALID_TRANSITION'
-const invalidTransitionAction = {
-    type: INVALID_TRANSITION
-}
-
-function createMiddleware(constraints) {
+function createMiddleware({ constraints, complex }) {
     if (constraints === undefined || constraints === null) {
-        throw new Error("State machine constraints are required.")
+        throw new Error("State transition constraints are required.")
     }
 
+    let isComplexState = complex === true;
+
+    // Generate the middleware
     return ({ getState }) => next => action => {
-        const currentState = getState()
+        let currentState = getState()
+        if (isComplexState) {
+            currentState = currentState.state
+        }
+
+        if (currentState === undefined) {
+            throw new Error('Current state was not structured properly.')
+        }
 
         // Is the action allowed on the current state?
         const allowedActions = constraints[currentState]
         if (allowedActions === undefined || allowedActions.length === 0) {
             // No contraints is an error. We fail closed here.
-            return next(invalidTransitionAction)
+            throw new Error('Action was not allowed on current state.')
         }
 
         const allowed = allowedActions.some(v => v == action.type)
         if (!allowed) {
-            return next(invalidTransitionAction)
+            throw new Error('Action was not allowed on current state.')
         }
 
         // Action allowed. Carry on. Nothing to see here.
@@ -31,6 +36,5 @@ function createMiddleware(constraints) {
 }
 
 module.exports = {
-    createMiddleware,
-    INVALID_TRANSITION
+    createMiddleware
 }
