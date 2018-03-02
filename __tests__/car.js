@@ -1,5 +1,5 @@
 const { applyMiddleware, createStore } = require('redux')
-const { createMiddleware, INVALID_TRANSITION } = require('../src/index')
+const { createMiddleware } = require('../src/index')
 
 // Define the state machine
 const constraints = {
@@ -16,9 +16,6 @@ function car(state = 'PARKED', action) {
             return 'CRASHED'
         case 'PARK':
             return 'PARKED'
-        // I don't love having to manually add this to my reducer.
-        case INVALID_TRANSITION:
-            return INVALID_TRANSITION
         default:
             return state
     }
