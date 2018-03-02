@@ -1,3 +1,4 @@
+import { DoneCallback } from "jest";
 import { IStateMachineDefinition, StateMachine } from "../src/index";
 
 // Define the state machine
@@ -41,7 +42,12 @@ describe("A car", () => {
     });
 
     describe("that is parked", () => {
-        test("can start driving", () => {
+        test("can start driving", (done: DoneCallback) => {
+            machine.events.subscribe((state: string) => {
+                expect(state).toBe("MOVING");
+                done();
+            });
+
             machine.transition("DRIVE");
             expect(machine.getState()).toBe("MOVING");
         });
@@ -57,12 +63,22 @@ describe("A car", () => {
             machine.transition("DRIVE");
         });
 
-        test("can crash", () => {
+        test("can crash", (done: DoneCallback) => {
+            machine.events.subscribe((state: string) => {
+                expect(state).toBe("CRASHED");
+                done();
+            });
+
             machine.transition("CRASH");
             expect(machine.getState()).toBe("CRASHED");
         });
 
-        test("can park", () => {
+        test("can park", (done: DoneCallback) => {
+            machine.events.subscribe((state: string) => {
+                expect(state).toBe("PARKED");
+                done();
+            });
+
             machine.transition("PARK");
             expect(machine.getState()).toBe("PARKED");
         });

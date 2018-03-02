@@ -1,5 +1,6 @@
 import { Map } from "immutable";
 import { Action, createStore, Reducer, Store } from "redux";
+import { Observable, Observer } from "rxjs/Rx";
 
 // Define a state
 export interface IStateMachineDefinition {
@@ -22,14 +23,24 @@ type ReducerFn = (state: string, transitionName: string) => string;
 type ReducerMap = Map<string, ReducerFn>;
 
 export class StateMachine {
+    private observable: Observable<string>;
     private reducers: ReducerMap;
     private store: Store<string>;
 
     constructor(private readonly definition: IStateMachineDefinition) {
+        // Initialize state store
         this.reducers = Map<string, ReducerFn>();
 
         const reducer = this.generateReducer(definition);
         this.store = createStore(reducer);
+
+        // Initialize event stream
+        this.observable = Observable.create((observer: Observer<string>) => {
+            this.store.subscribe(() => {
+                const state = this.getState();
+                observer.next(state);
+            });
+        });
     }
 
     public transition(transition: string) {
@@ -38,6 +49,10 @@ export class StateMachine {
 
     public getState(): string {
         return this.store.getState();
+    }
+
+    public get events(): Observable<string> {
+        return this.observable;
     }
 
     private generateReducer(machine: IStateMachineDefinition): Reducer<string> {
