@@ -18,53 +18,17 @@ interface ITransition {
     nextState: string;
 }
 
+type ReducerFn = (state: string, transitionName: string) => string;
+type ReducerMap = Map<string, ReducerFn>;
+
 export class StateMachine {
-    private static generateReducer(machine: IStateMachineDefinition): Reducer<string> {
-        // Index the states
-        const indexStates = (acc: Map<string, number>, current: IState, currentIdx: number) => {
-            return acc.set(current.id, currentIdx);
-        };
-        const statesIdx = machine.states.reduce(indexStates, Map<string, number>());
-
-        // Index the transitions
-        const indexTransistions = (acc: Map<string, ITransition>, current: ITransition) => {
-            return acc.set(current.id, current);
-        };
-        const transistionsIdx = machine.transitions.reduce(indexTransistions, Map<string, ITransition>());
-
-        // Create a reducer
-        return (state = machine.initialState, action: Action) => {
-            // Is the action supported on the current state?
-            const stateIdx = statesIdx.get(state, -1);
-            if (stateIdx === -1) {
-                return state;
-            }
-
-            const stateDefinition = machine.states[stateIdx];
-            if (stateDefinition === undefined) {
-                return state;
-            }
-
-            const findTransition = (acc: ITransition, current: string) => {
-                if (action.type as string === current) {
-                    return acc = transistionsIdx.get(current);
-                }
-                return acc;
-            };
-
-            const transition = stateDefinition.transitions.reduce(findTransition, null);
-            if (!transition) {
-                return state;
-            }
-
-            return transition.nextState;
-        };
-    }
-
+    private reducers: ReducerMap;
     private store: Store<string>;
 
     constructor(private readonly definition: IStateMachineDefinition) {
-        const reducer = StateMachine.generateReducer(definition);
+        this.reducers = Map<string, ReducerFn>();
+
+        const reducer = this.generateReducer(definition);
         this.store = createStore(reducer);
     }
 
@@ -74,5 +38,46 @@ export class StateMachine {
 
     public getState(): string {
         return this.store.getState();
+    }
+
+    private generateReducer(machine: IStateMachineDefinition): Reducer<string> {
+        // Index the transitions
+        const indexTransistions = (acc: Map<string, ITransition>, current: ITransition) => {
+            return acc.set(current.id, current);
+        };
+        const transistionsIdx = machine.transitions.reduce(indexTransistions, Map<string, ITransition>());
+
+        // Generate reducers for each state
+        const indexStates = (acc: ReducerMap, current: IState) => {
+            const reducer = (state: string, transitionName: string): string => {
+                // Is the transition allowed?
+                const allowed = current.transitions.some((v: string) => v === transitionName);
+                if (!allowed) {
+                    return state;
+                }
+
+                // Return the next state
+                const transition = transistionsIdx.get(transitionName);
+                if (transition === undefined) {
+                    return state;
+                }
+
+                return transition.nextState;
+            };
+
+            return acc.set(current.id, reducer);
+        };
+        const statesIdx = machine.states.reduce(indexStates, this.reducers);
+
+        // Create a reducer
+        return (state = machine.initialState, action: Action) => {
+            // Call the approriate reducer
+            const reducer = statesIdx.get(state);
+            if (reducer === undefined) {
+                return state;
+            }
+
+            return reducer.call(this, state, action.type as string);
+        };
     }
 }
