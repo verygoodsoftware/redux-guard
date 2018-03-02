@@ -1,5 +1,5 @@
 const { applyMiddleware, createStore } = require('redux')
-const { createMiddleware } = require('../src/index');
+const { createMiddleware, INVALID_TRANSITION } = require('../src/index');
 
 // Define the state machine
 const constraints = {
@@ -16,6 +16,9 @@ function car(state = 'PARKED', action) {
             return 'CRASHED'
         case 'PARK':
             return 'PARKED'
+        // I don't love having to manually add this to my reducer.
+        case INVALID_TRANSITION:
+            return INVALID_TRANSITION
         default:
             return state
     }
@@ -36,7 +39,7 @@ describe('A car', () => {
 
         test('cannot crash', () => {
             store.dispatch({ type: 'CRASH'});
-            expect(store.getState()).toBe('PARKED');
+            expect(store.getState()).toBe(INVALID_TRANSITION);
         });
     });
 
@@ -64,12 +67,12 @@ describe('A car', () => {
 
         test('cannot park', () => {
             store.dispatch({ type: 'PARK' });
-            expect(store.getState()).toBe('CRASHED');
+            expect(store.getState()).toBe(INVALID_TRANSITION);
         });
 
         test('cannot start driving', () => {
             store.dispatch({ type: 'DRIVE' });
-            expect(store.getState()).toBe('CRASHED');
+            expect(store.getState()).toBe(INVALID_TRANSITION);
         });
     });
 });

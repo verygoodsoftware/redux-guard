@@ -1,7 +1,8 @@
 'use strict'
 
+const INVALID_TRANSITION = 'INVALID_TRANSITION'
 const invalidTransitionAction = {
-    type: 'INVALID_TRANSITION'
+    type: INVALID_TRANSITION
 }
 
 function createMiddleware(constraints) {
@@ -30,5 +31,6 @@ function createMiddleware(constraints) {
 }
 
 module.exports = {
-    createMiddleware
+    createMiddleware,
+    INVALID_TRANSITION
 }
