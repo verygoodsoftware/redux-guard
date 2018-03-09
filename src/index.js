@@ -2,10 +2,10 @@
 
 function createMiddleware({ constraints, complex }) {
     if (constraints === undefined || constraints === null) {
-        throw new Error("State transition constraints are required.")
+        throw new Error('State transition constraints are required.')
     }
 
-    let isComplexState = complex === true;
+    let isComplexState = complex === true
 
     // Generate the middleware
     return ({ getState }) => next => action => {
