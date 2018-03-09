@@ -8,14 +8,14 @@ const constraints = {
     'CRASHED': []
 }
 
-function car(state = { state: 'PARKED', speed: 0 }, action) {
+function car(state = { __currentState: 'PARKED', speed: 0 }, action) {
     switch (action.type) {
         case 'DRIVE':
-            return { state: 'MOVING', speed: 65 }
+            return { __currentState: 'MOVING', speed: 65 }
         case 'CRASH':
-            return { state: 'CRASHED', speed: 0 }
+            return { __currentState: 'CRASHED', speed: 0 }
         case 'PARK':
-            return { state: 'PARKED', speed: 0 }
+            return { __currentState: 'PARKED', speed: 0 }
         case 'DRIVE_FASTER':
             return { speed: 85 }
         default:
@@ -33,7 +33,7 @@ describe('A more complex car', () => {
     describe('that is parked', () => {
         test('can start driving', () => {
             store.dispatch({ type: 'DRIVE'})
-            expect(store.getState().state).toBe('MOVING')
+            expect(store.getState().__currentState).toBe('MOVING')
         })
 
         test('cannot crash', () => {
@@ -48,12 +48,12 @@ describe('A more complex car', () => {
 
         test('can crash', () => {
             store.dispatch({ type: 'CRASH' })
-            expect(store.getState().state).toBe('CRASHED')
+            expect(store.getState().__currentState).toBe('CRASHED')
         })
 
         test('can park', () => {
             store.dispatch({ type: 'PARK' })
-            expect(store.getState().state).toBe('PARKED')
+            expect(store.getState().__currentState).toBe('PARKED')
         })
     })
 

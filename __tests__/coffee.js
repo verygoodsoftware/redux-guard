@@ -8,20 +8,20 @@ const constraints = {
     'DRINKING': [ 'SIP', 'STOP' ]
 }
 
-function reducer(state = { state: 'RESTING', enjoyment: 0 }, action) {
+function reducer(state = { __currentState: 'RESTING', enjoyment: 0 }, action) {
     switch (action.type) {
         case 'STOP':
-            return { state: 'RESTING', enjoyment: 0 }
+            return { __currentState: 'RESTING', enjoyment: 0 }
         case 'HEAT_WATER':
-            return { state: 'BREWING', enjoyment: 20 }
+            return { __currentState: 'BREWING', enjoyment: 20 }
         case 'GRIND_BEANS':
-            return { state: 'BREWING', enjoyment: 40 }
+            return { __currentState: 'BREWING', enjoyment: 40 }
         case 'POUR_WATER':
-            return { state: 'BREWING', enjoyment: 60 }
+            return { __currentState: 'BREWING', enjoyment: 60 }
         case 'POUR_COFFEE':
-            return { state: 'DRINKING', enjoyment: 80 }
+            return { __currentState: 'DRINKING', enjoyment: 80 }
         case 'SIP':
-            return { state: 'DRINKING', enjoyment: 100 }
+            return { __currentState: 'DRINKING', enjoyment: 100 }
         default:
             return state
     }
@@ -37,18 +37,18 @@ describe('A barista', () => {
     describe('that is resting', () => {
         test('can start heating water', () => {
             store.dispatch({ type: 'HEAT_WATER' })
-            expect(store.getState().state).toBe('BREWING')
+            expect(store.getState().__currentState).toBe('BREWING')
         })
 
         test('can start grinding beans', () => {
             store.dispatch({ type: 'GRIND_BEANS' })
-            expect(store.getState().state).toBe('BREWING')
+            expect(store.getState().__currentState).toBe('BREWING')
         })
 
         test('can stop', () => {
             store.dispatch({ type: 'GRIND_BEANS' })
             store.dispatch({ type: 'STOP' })
-            expect(store.getState().state).toBe('RESTING')
+            expect(store.getState().__currentState).toBe('RESTING')
         })
 
         test('can not pour coffee', () => {
@@ -64,13 +64,13 @@ describe('A barista', () => {
         test('can pour water', () => {
             store.dispatch({ type: 'HEAT_WATER' })
             store.dispatch({ type: 'POUR_WATER' })
-            expect(store.getState().state).toBe('BREWING')
+            expect(store.getState().__currentState).toBe('BREWING')
         })
 
         test('can pour coffee', () => {
             store.dispatch({ type: 'HEAT_WATER' })
             store.dispatch({ type: 'POUR_COFFEE' })
-            expect(store.getState().state).toBe('DRINKING')
+            expect(store.getState().__currentState).toBe('DRINKING')
         })
 
         test('cannot sip without pouring coffee', () => {
@@ -85,7 +85,7 @@ describe('A barista', () => {
             store.dispatch({ type: 'HEAT_WATER' })
             store.dispatch({ type: 'POUR_COFFEE' })
             store.dispatch({ type: 'SIP' })
-            expect(store.getState().state).toBe('DRINKING')
+            expect(store.getState().__currentState).toBe('DRINKING')
         })
 
         test('cannot continue sipping after stopping', () => {

@@ -11,7 +11,7 @@ function createMiddleware({ constraints, complex }) {
     return ({ getState }) => next => action => {
         let currentState = getState()
         if (isComplexState) {
-            currentState = currentState.state
+            currentState = currentState.__currentState
         }
 
         if (currentState === undefined) {
