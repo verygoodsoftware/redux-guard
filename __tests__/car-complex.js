@@ -2,10 +2,13 @@ const { applyMiddleware, createStore } = require('redux')
 const { createMiddleware } = require('../src/index')
 
 // Define the state machine
-const constraints = {
-    'PARKED': [ 'DRIVE' ],
-    'MOVING': [ 'CRASH', 'PARK', 'DRIVE_FASTER' ],
-    'CRASHED': []
+const config = {
+    getProp: state => state.__currentState,
+    constraints: {
+        'PARKED': [ 'DRIVE' ],
+        'MOVING': [ 'CRASH', 'PARK', 'DRIVE_FASTER' ],
+        'CRASHED': []
+    }
 }
 
 function car(state = { __currentState: 'PARKED', speed: 0 }, action) {
@@ -27,7 +30,7 @@ let store = null
 
 describe('A more complex car', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createMiddleware({ constraints, complex: true })))
+        store = createStore(car, applyMiddleware(createMiddleware({ config })))
     })
 
     describe('that is parked', () => {
@@ -75,7 +78,7 @@ describe('A more complex car', () => {
 
 describe('A complex state machine', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createMiddleware({ constraints, complex: true })))
+        store = createStore(car, applyMiddleware(createMiddleware({ config })))
     })
 
     test('that has an improperly structured state should throw an error', () => {

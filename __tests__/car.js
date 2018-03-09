@@ -2,10 +2,13 @@ const { applyMiddleware, createStore } = require('redux')
 const { createMiddleware } = require('../src/index')
 
 // Define the state machine
-const constraints = {
-    'PARKED': [ 'DRIVE' ],
-    'MOVING': [ 'CRASH', 'PARK' ],
-    'CRASHED': []
+const config = {
+    getProp: state => state,
+    constraints: {
+        'PARKED': [ 'DRIVE' ],
+        'MOVING': [ 'CRASH', 'PARK' ],
+        'CRASHED': []
+    }
 }
 
 function car(state = 'PARKED', action) {
@@ -25,7 +28,7 @@ let store = null
 
 describe('A car', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createMiddleware({ constraints })))
+        store = createStore(car, applyMiddleware(createMiddleware({ config })))
     })
 
     describe('that is parked', () => {

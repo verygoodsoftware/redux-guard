@@ -2,10 +2,13 @@ const { applyMiddleware, createStore } = require('redux')
 const { createMiddleware } = require('../src/index')
 
 // Define the state machine
-const constraints = {
-    'RESTING': [ 'HEAT_WATER', 'GRIND_BEANS', 'STOP' ],
-    'BREWING': [ 'HEAT_WATER', 'GRIND_BEANS', 'POUR_WATER', 'POUR_COFFEE', 'STOP' ],
-    'DRINKING': [ 'SIP', 'STOP' ]
+const config = {
+    getProp: state => state.__currentState,
+    constraints: {
+        'RESTING': [ 'HEAT_WATER', 'GRIND_BEANS', 'STOP' ],
+        'BREWING': [ 'HEAT_WATER', 'GRIND_BEANS', 'POUR_WATER', 'POUR_COFFEE', 'STOP' ],
+        'DRINKING': [ 'SIP', 'STOP' ]
+    }
 }
 
 function reducer(state = { __currentState: 'RESTING', enjoyment: 0 }, action) {
@@ -31,7 +34,7 @@ let store = null
 
 describe('A barista', () => {
     beforeEach(() => {
-        store = createStore(reducer, applyMiddleware(createMiddleware({ constraints, complex: true })))
+        store = createStore(reducer, applyMiddleware(createMiddleware({ config, complex: true })))
     })
 
     describe('that is resting', () => {
