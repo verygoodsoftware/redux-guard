@@ -3,12 +3,17 @@ const { createMiddleware } = require('../src/index')
 
 // Define the state machine
 const config = {
-    getProp: state => state,
-    constraints: {
-        'PARKED': [ 'DRIVE' ],
-        'MOVING': [ 'CRASH', 'PARK' ],
-        'CRASHED': []
-    }
+    guards: [
+        {
+            getProp: state => state,
+            constraints: {
+                'PARKED': [ 'DRIVE' ],
+                'MOVING': [ 'CRASH', 'PARK' ],
+                'CRASHED': []
+            }
+        }
+    ]
+    
 }
 
 function car(state = 'PARKED', action) {

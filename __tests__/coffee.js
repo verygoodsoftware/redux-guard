@@ -3,12 +3,16 @@ const { createMiddleware } = require('../src/index')
 
 // Define the state machine
 const config = {
-    getProp: state => state.__currentState,
-    constraints: {
-        'RESTING': [ 'HEAT_WATER', 'GRIND_BEANS', 'STOP' ],
-        'BREWING': [ 'HEAT_WATER', 'GRIND_BEANS', 'POUR_WATER', 'POUR_COFFEE', 'STOP' ],
-        'DRINKING': [ 'SIP', 'STOP' ]
-    }
+    guards: [
+        {
+            getProp: state => state.__currentState,
+            constraints: {
+                'RESTING': [ 'HEAT_WATER', 'GRIND_BEANS', 'STOP' ],
+                'BREWING': [ 'HEAT_WATER', 'GRIND_BEANS', 'POUR_WATER', 'POUR_COFFEE', 'STOP' ],
+                'DRINKING': [ 'SIP', 'STOP' ]
+            }
+        }
+    ]    
 }
 
 function reducer(state = { __currentState: 'RESTING', enjoyment: 0 }, action) {
