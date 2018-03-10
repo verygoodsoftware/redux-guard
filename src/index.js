@@ -1,5 +1,12 @@
 'use strict'
 
+const { Set } = require('immutable')
+
+function inSet(list) {
+    const set = Set(list)
+    return actionType => set.has(actionType)
+}
+
 function createMiddleware({ config }) {
     // TODO: Better configuration validation. JSON schema perhaps?
     if (config === undefined || config === null) {
@@ -18,7 +25,7 @@ function createMiddleware({ config }) {
             // Is the current state interested in the action?
             const matchAction = v => v === action.type
 
-            const interested = guard.filter === undefined ? true : guard.filter.some(matchAction)
+            const interested = guard.filter === undefined ? true : guard.filter.call(undefined, action.type)
             if (!interested) {
                 continue
             }
@@ -42,5 +49,6 @@ function createMiddleware({ config }) {
 }
 
 module.exports = {
-    createMiddleware
+    createMiddleware,
+    inSet
 }

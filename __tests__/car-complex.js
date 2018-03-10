@@ -1,13 +1,13 @@
 const { Map } = require('immutable')
 const { applyMiddleware, createStore } = require('redux')
-const { createMiddleware } = require('../src/index')
+const { createMiddleware, inSet } = require('../src/index')
 
 // Define the state machine
 const config = {
     guards: [
         {
             getProp: state => state.get('__currentState'),
-            filter: [ 'DRIVE', 'CRASH', 'PARK', 'DRIVE_FASTER' ],
+            filter: inSet([ 'DRIVE', 'CRASH', 'PARK', 'DRIVE_FASTER' ]),
             constraints: {
                 'PARKED': [ 'DRIVE' ],
                 'MOVING': [ 'CRASH', 'PARK', 'DRIVE_FASTER' ],
@@ -16,7 +16,7 @@ const config = {
         },
         {
             getProp: state => state.get('gear'),
-            filter: [ 'SHIFT', 'DOWNSHIFT' ],
+            filter: inSet([ 'SHIFT', 'DOWNSHIFT' ]),
             constraints: {
                 1: [ 'SHIFT' ],
                 2: [ 'SHIFT', 'DOWNSHIFT' ]
