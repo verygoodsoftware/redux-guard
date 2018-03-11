@@ -19,7 +19,7 @@ const config = {
             filter: inSet([ 'SHIFT', 'DOWNSHIFT' ]),
             constraints: {
                 1: [ 'SHIFT' ],
-                2: [ 'SHIFT', 'DOWNSHIFT' ]
+                2: [ 'DOWNSHIFT' ]
             }
         }
     ]
