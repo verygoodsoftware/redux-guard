@@ -2,7 +2,7 @@
 
 const { Set } = require('immutable')
 
-function inSet(list) {
+function oneOf(list) {
     const set = Set(list)
     return actionType => set.has(actionType)
 }
@@ -16,7 +16,7 @@ function createMiddleware({ config }) {
     // Generate the middleware
     return ({ getState }) => next => action => {
         for (let guard of config.guards) {
-            let currentState = guard.getProp(getState())
+            let currentState = guard.getCurrentState(getState())
 
             if (currentState === undefined) {
                 throw new Error('Current state was not structured properly.')
@@ -50,5 +50,5 @@ function createMiddleware({ config }) {
 
 module.exports = {
     createMiddleware,
-    inSet
+    oneOf
 }

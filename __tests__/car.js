@@ -5,7 +5,7 @@ const { createMiddleware } = require('../src/index')
 const config = {
     guards: [
         {
-            getProp: state => state,
+            getCurrentState: state => state,
             constraints: {
                 'PARKED': [ 'DRIVE' ],
                 'MOVING': [ 'CRASH', 'PARK' ],

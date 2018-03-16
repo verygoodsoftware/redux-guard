@@ -5,7 +5,7 @@ const { createMiddleware } = require('../src/index')
 const config = {
     guards: [
         {
-            getProp: state => state.__currentState,
+            getCurrentState: state => state.__currentState,
             constraints: {
                 'RESTING': [ 'HEAT_WATER', 'GRIND_BEANS', 'STOP' ],
                 'BREWING': [ 'HEAT_WATER', 'GRIND_BEANS', 'POUR_WATER', 'POUR_COFFEE', 'STOP' ],

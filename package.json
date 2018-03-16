@@ -1,7 +1,7 @@
 {
-  "name": "stately",
+  "name": "redux-guard",
   "version": "1.0.0",
-  "description": "Redux + state management.",
+  "description": "A Redux middleware to keep your actions in line.",
   "main": "src/index.js",
   "scripts": {
     "prepublish": "rm -rf dist && babel --out-dir dist src",
