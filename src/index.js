@@ -13,6 +13,12 @@ function createGuardMiddleware({ config }) {
         throw new Error('Configuration is required.')
     }
 
+    // Combine each guard's constraint actions into filter
+    for (let guard of config.guards) {
+        let constraintActions = Object.values(guard.constraints)
+        guard.filter = oneOf([].concat(...constraintActions))
+    }
+
     // Generate the middleware
     return ({ getState }) => next => action => {
         for (let guard of config.guards) {
@@ -49,6 +55,5 @@ function createGuardMiddleware({ config }) {
 }
 
 module.exports = {
-    createGuardMiddleware,
-    oneOf
+    createGuardMiddleware
 }
