@@ -1,6 +1,6 @@
 const { Map } = require('immutable')
 const { applyMiddleware, createStore } = require('redux')
-const { createMiddleware, oneOf } = require('../src/index')
+const { createGuardMiddleware, oneOf } = require('../src/index')
 
 // Define the state machine
 const config = {
@@ -58,7 +58,7 @@ let store = null
 
 describe('A more complex car', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createMiddleware({ config })))
+        store = createStore(car, applyMiddleware(createGuardMiddleware({ config })))
     })
 
     describe('that is parked', () => {
@@ -115,7 +115,7 @@ describe('A more complex car', () => {
 
 describe('A complex state machine', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createMiddleware({ config })))
+        store = createStore(car, applyMiddleware(createGuardMiddleware({ config })))
     })
 
     test('that has an improperly structured state should throw an error', () => {

@@ -1,5 +1,5 @@
 const { applyMiddleware, createStore } = require('redux')
-const { createMiddleware } = require('../src/index')
+const { createGuardMiddleware } = require('../src/index')
 
 // Define the state machine
 const config = {
@@ -38,7 +38,7 @@ let store = null
 
 describe('A barista', () => {
     beforeEach(() => {
-        store = createStore(reducer, applyMiddleware(createMiddleware({ config, complex: true })))
+        store = createStore(reducer, applyMiddleware(createGuardMiddleware({ config, complex: true })))
     })
 
     describe('that is resting', () => {

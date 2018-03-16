@@ -7,7 +7,7 @@ function oneOf(list) {
     return actionType => set.has(actionType)
 }
 
-function createMiddleware({ config }) {
+function createGuardMiddleware({ config }) {
     // TODO: Better configuration validation. JSON schema perhaps?
     if (config === undefined || config === null) {
         throw new Error('Configuration is required.')
@@ -49,6 +49,6 @@ function createMiddleware({ config }) {
 }
 
 module.exports = {
-    createMiddleware,
+    createGuardMiddleware,
     oneOf
 }

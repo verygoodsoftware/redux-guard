@@ -1,5 +1,5 @@
 const { applyMiddleware, createStore } = require('redux')
-const { createMiddleware } = require('../src/index')
+const { createGuardMiddleware } = require('../src/index')
 
 // Define the state machine
 const config = {
@@ -33,7 +33,7 @@ let store = null
 
 describe('A car', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createMiddleware({ config })))
+        store = createStore(car, applyMiddleware(createGuardMiddleware({ config })))
     })
 
     describe('that is parked', () => {
