@@ -6,7 +6,7 @@
   "scripts": {
     "prepublish": "rm -rf dist && babel --out-dir dist src",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "author": "cmcahoon@gmail.com",
   "license": "MIT",
