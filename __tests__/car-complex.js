@@ -1,6 +1,6 @@
 const { Map } = require('immutable')
 const { applyMiddleware, createStore } = require('redux')
-const { createMiddleware } = require('../src/index')
+const { createGuardMiddleware } = require('../src/index')
 
 // Define the state machine
 const config = {

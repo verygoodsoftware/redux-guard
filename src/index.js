@@ -55,5 +55,5 @@ function createMiddleware({ config }) {
 }
 
 module.exports = {
-    createMiddleware
+    createGuardMiddleware
 }
