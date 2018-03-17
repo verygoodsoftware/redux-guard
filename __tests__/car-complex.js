@@ -56,7 +56,7 @@ let store = null
 
 describe('A more complex car', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createGuardMiddleware({ config })))
+        store = createStore(car, applyMiddleware(createGuardMiddleware(config)))
     })
 
     describe('that is parked', () => {
@@ -113,7 +113,7 @@ describe('A more complex car', () => {
 
 describe('A complex state machine', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createGuardMiddleware({ config })))
+        store = createStore(car, applyMiddleware(createGuardMiddleware(config)))
     })
 
     test('that has an improperly structured state should throw an error', () => {

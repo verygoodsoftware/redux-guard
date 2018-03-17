@@ -38,7 +38,7 @@ let store = null
 
 describe('A barista', () => {
     beforeEach(() => {
-        store = createStore(reducer, applyMiddleware(createGuardMiddleware({ config, complex: true })))
+        store = createStore(reducer, applyMiddleware(createGuardMiddleware(config)))
     })
 
     describe('that is resting', () => {

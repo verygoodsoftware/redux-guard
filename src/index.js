@@ -1,17 +1,40 @@
 'use strict'
 
 const { Set } = require('immutable')
+const validate = require('validate.js')
 
 function oneOf(list) {
     const set = Set(list)
     return actionType => set.has(actionType)
 }
 
-function createGuardMiddleware({ config }) {
-    // TODO: Better configuration validation. JSON schema perhaps?
+function validateConfig(config) {
     if (config === undefined || config === null) {
         throw new Error('Configuration is required.')
     }
+
+    const guards = config.guards
+    if (!validate.isArray(guards)) {
+        throw new Error('"guards" should be an array.')
+    }
+
+    if (guards.length == 0) {
+        throw new Error('At least one guard should be provided.')
+    }
+
+    guards.forEach((guard, idx) => {
+        if (!validate.isFunction(guard.getCurrentState)) {
+            throw new Error(`"guards[${idx}].getCurrentState" should be a function.`)
+        }
+
+        if (!validate.isDefined(guard.constraints)) {
+            throw new Error(`"guards[${idx}].constraints" should be specified.`)
+        }
+    })
+}
+
+function createGuardMiddleware(config) {
+    validateConfig(config)
 
     // Combine each guard's constraint actions into filter
     for (let guard of config.guards) {

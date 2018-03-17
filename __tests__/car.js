@@ -33,7 +33,7 @@ let store = null
 
 describe('A car', () => {
     beforeEach(() => {
-        store = createStore(car, applyMiddleware(createGuardMiddleware({ config })))
+        store = createStore(car, applyMiddleware(createGuardMiddleware(config)))
     })
 
     describe('that is parked', () => {
