@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A Redux middleware to keep your actions in line.",
   "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/verygoodsoftware/redux-guard.git"
+  },
   "scripts": {
     "prepublish": "rm -rf dist && babel --out-dir dist src",
     "lint": "eslint .",
