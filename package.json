@@ -18,7 +18,7 @@
     "lint": "eslint .",
     "test": "jest --coverage"
   },
-  "author": "<Charles Cahoon <cmcahoon@gmail.com> (https://github.com/cmcahoon)",
+  "author": "Charles Cahoon <cmcahoon@gmail.com> (https://github.com/cmcahoon)",
   "contributors": [
     "Luke Elmers <lukeelmers@gmail.com> (https://github.com/lukeelmers)"
   ],
