@@ -2,17 +2,29 @@
   "name": "redux-guard",
   "version": "1.0.0",
   "description": "A Redux middleware to keep your actions in line.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/verygoodsoftware/redux-guard.git"
   },
+  "keywords": [
+    "redux",
+    "middleware",
+    "guard",
+    "redux-middleware"
+  ],
   "scripts": {
     "prepublish": "rm -rf dist && babel --out-dir dist src",
     "lint": "eslint .",
     "test": "jest --coverage"
   },
-  "author": "cmcahoon@gmail.com",
+  "author": "<Charles Cahoon <cmcahoon@gmail.com> (https://github.com/cmcahoon)",
+  "contributors": [
+    "Luke Elmers <lukeelmers@gmail.com> (https://github.com/lukeelmers)"
+  ],
+  "bugs": {
+    "url": "https://github.com/verygoodsoftware/redux-guard/issues"
+  },
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
