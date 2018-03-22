@@ -1,10 +1,4 @@
-# redux-guard
-
-[![Build Status](https://travis-ci.org/verygoodsoftware/redux-guard.svg?branch=master)](https://travis-ci.org/verygoodsoftware/redux-guard)
-
-[![Test Coverage](https://api.codeclimate.com/v1/badges/1e422e77c9eda15630e1/test_coverage)](https://codeclimate.com/github/verygoodsoftware/redux-guard/test_coverage)
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/1e422e77c9eda15630e1/maintainability)](https://codeclimate.com/github/verygoodsoftware/redux-guard/maintainability)
+# redux-guard&nbsp;&nbsp;[![Build Status](https://travis-ci.org/verygoodsoftware/redux-guard.svg?branch=master)](https://travis-ci.org/verygoodsoftware/redux-guard)&nbsp;[![Test Coverage](https://api.codeclimate.com/v1/badges/1e422e77c9eda15630e1/test_coverage)](https://codeclimate.com/github/verygoodsoftware/redux-guard/test_coverage)&nbsp;[![Maintainability](https://api.codeclimate.com/v1/badges/1e422e77c9eda15630e1/maintainability)](https://codeclimate.com/github/verygoodsoftware/redux-guard/maintainability)
 
 A middleware that turns Redux into a state machine, enforcing
 how your actions are sequenced.
